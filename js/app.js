@@ -1,4 +1,4 @@
-// EGER - Empowering Your Next Chapter
+// EGER - The Future
 // Main Application Logic & Interactivity
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCopyTips();
   initQuizzes();
   initUniversityPredictor();
+  initCommunityForm();
 });
 
 /* --- 1. Theme Management (Light / Dark) --- */
@@ -40,7 +41,7 @@ function updateThemeIcon(btn, theme) {
   btn.setAttribute("aria-label", `Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`);
 }
 
-/* --- 2. Mobile Menu Toggle --- */
+/* --- 2. Mobile Menu Toggle with Outside/Esc Dismiss --- */
 function initMobileMenu() {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const navLinks = document.getElementById("navLinks");
@@ -51,16 +52,32 @@ function initMobileMenu() {
     menuBtn.textContent = navLinks.classList.contains("open") ? "✕" : "☰";
   });
 
-  // Close menu when clicking link
+  // Close menu when clicking any nav link
   navLinks.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
       navLinks.classList.remove("open");
       menuBtn.textContent = "☰";
     });
   });
+
+  // Close when clicking outside of nav
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#topNav") && navLinks.classList.contains("open")) {
+      navLinks.classList.remove("open");
+      menuBtn.textContent = "☰";
+    }
+  });
+
+  // Close on Escape key press
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("open")) {
+      navLinks.classList.remove("open");
+      menuBtn.textContent = "☰";
+    }
+  });
 }
 
-/* --- Nav Dynamic Scroll Effect --- */
+/* --- Nav Dynamic Scroll Elevation --- */
 function initNavScrollEffect() {
   const nav = document.getElementById("topNav");
   if (!nav) return;
@@ -203,7 +220,37 @@ function initDsatCalculator() {
     const weeks = parseInt(weeksInput.value) || 8;
     const hours = parseInt(hoursInput.value) || 10;
 
-    const gap = Math.max(0, target - current);
+    const gap = target - current;
+
+    // Edge case: target already attained or surpassed
+    if (gap <= 0) {
+      if (resultScore) resultScore.textContent = `${current} (Elite Bracket)`;
+      if (resultHours) resultHours.textContent = `~25 Hours Maintenance`;
+      if (resultWeekly) resultWeekly.textContent = `3-5h / week maintenance`;
+
+      if (roadmapContainer) {
+        roadmapContainer.innerHTML = `
+          <div class="roadmap-step">
+            <span class="step-num">1</span>
+            <div><strong>Score Retention:</strong> Complete 1 full timed adaptive Bluebook section per week to preserve timing intuition.</div>
+          </div>
+          <div class="roadmap-step">
+            <span class="step-num">2</span>
+            <div><strong>Perfect 800 Isolation:</strong> Drill hard-tier College Board Question Bank items in Module 2 (Nonlinear systems, Rhetorical Synthesis).</div>
+          </div>
+          <div class="roadmap-step">
+            <span class="step-num">3</span>
+            <div><strong>Super-Score Maximizer:</strong> Direct 80% of prep toward your lowest section to combine two test dates into a 1550+ superscore.</div>
+          </div>
+          <div class="roadmap-step">
+            <span class="step-num">4</span>
+            <div><strong>Peak Endurance:</strong> Practice test-day pacing (under 1 minute per standard item) to leave 10 minutes for Desmos regression checks.</div>
+          </div>
+        `;
+      }
+      return;
+    }
+
     const totalHoursNeeded = Math.max(40, Math.round(gap * 0.85));
     const hoursPerWeekRec = Math.round(totalHoursNeeded / Math.max(1, weeks));
 
@@ -287,7 +334,7 @@ function initSpikeBuilder() {
       if (adviceBox && data) {
         adviceBox.innerHTML = `
           <div style="background: var(--bg-card); border-left: 4px solid var(--gold-vibrant); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
               <h4 style="font-size: 1.1rem; font-weight: 800;">${data.title}</h4>
               <span class="tier-badge">${data.badge}</span>
             </div>
@@ -324,7 +371,26 @@ function initAccordion() {
   });
 }
 
-/* --- 8. Copy-to-Clipboard for Social Media Tip Cards --- */
+/* --- 8. Copy-to-Clipboard with Robust Fallback --- */
+function fallbackCopyText(text, successCb) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  textArea.style.top = "-9999px";
+  textArea.setAttribute("readonly", "");
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand("copy");
+    if (successful && successCb) successCb();
+  } catch (err) {
+    console.error("Fallback copy error:", err);
+  }
+  document.body.removeChild(textArea);
+}
+
 function initCopyTips() {
   const copyBtns = document.querySelectorAll(".btn-copy-tip");
 
@@ -333,7 +399,7 @@ function initCopyTips() {
       const textToCopy = btn.getAttribute("data-tip-content");
       if (!textToCopy) return;
 
-      navigator.clipboard.writeText(textToCopy).then(() => {
+      const notifySuccess = () => {
         const originalHtml = btn.innerHTML;
         btn.innerHTML = `✓ Copied for TikTok/IG!`;
         btn.style.background = "var(--emerald-light)";
@@ -344,14 +410,20 @@ function initCopyTips() {
           btn.style.background = "";
           btn.style.color = "";
         }, 2200);
-      }).catch(err => {
-        console.error("Clipboard copy failed:", err);
-      });
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(notifySuccess)
+          .catch(() => fallbackCopyText(textToCopy, notifySuccess));
+      } else {
+        fallbackCopyText(textToCopy, notifySuccess);
+      }
     });
   });
 }
 
-/* --- 9. Interactive Practice Quizzes --- */
+/* --- 9. Interactive Practice Quizzes with Retry Support --- */
 function initQuizzes() {
   const quizBoxes = document.querySelectorAll(".quiz-box");
 
@@ -359,11 +431,38 @@ function initQuizzes() {
     const optionBtns = box.querySelectorAll(".quiz-opt-btn");
     const explanation = box.querySelector(".quiz-explanation");
 
+    // Add Retry button dynamically if explanation exists
+    if (explanation && !box.querySelector(".quiz-retry-btn")) {
+      const retryBtn = document.createElement("button");
+      retryBtn.type = "button";
+      retryBtn.className = "quiz-retry-btn";
+      retryBtn.innerHTML = "↺ Try Again / Re-test";
+      retryBtn.style.cssText = "display: inline-block; margin-top: 1rem; padding: 0.45rem 1rem; font-size: 0.85rem; font-weight: 700; color: var(--brand-red); background: transparent; border: 1px solid var(--brand-red); border-radius: 9999px; cursor: pointer; transition: all 0.2s ease;";
+
+      retryBtn.addEventListener("mouseenter", () => {
+        retryBtn.style.background = "var(--brand-red)";
+        retryBtn.style.color = "#FFFFFF";
+      });
+      retryBtn.addEventListener("mouseleave", () => {
+        retryBtn.style.background = "transparent";
+        retryBtn.style.color = "var(--brand-red)";
+      });
+      retryBtn.addEventListener("click", () => {
+        optionBtns.forEach(b => {
+          b.classList.remove("correct", "wrong");
+          b.disabled = false;
+        });
+        explanation.classList.remove("show");
+      });
+
+      explanation.appendChild(retryBtn);
+    }
+
     optionBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         const isCorrect = btn.getAttribute("data-correct") === "true";
 
-        // Reset states
+        // Lock options & mark correct answer
         optionBtns.forEach(b => {
           b.classList.remove("correct", "wrong");
           b.disabled = true;
@@ -398,7 +497,6 @@ function initUniversityPredictor() {
     const stream = streamSelect.value;
 
     let tier = "";
-    let badgeClass = "";
     let recommendations = [];
 
     if (stream === "natural") {
@@ -474,5 +572,36 @@ function initUniversityPredictor() {
         </ul>
       </div>
     `;
+  });
+}
+
+/* --- 11. Community Mentorship Waitlist Form --- */
+function initCommunityForm() {
+  const form = document.getElementById("communityWaitlistForm");
+  const alertBox = document.getElementById("waitlistSuccessAlert");
+  if (!form || !alertBox) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("studentName")?.value || "Scholar";
+    const contact = document.getElementById("studentEmail")?.value || "";
+    const goalSelect = document.getElementById("primaryGoal");
+    const goalText = goalSelect ? goalSelect.options[goalSelect.selectedIndex].text : "Scholars Program";
+
+    alertBox.innerHTML = `
+      <div style="background: rgba(34, 197, 94, 0.12); border: 1px solid var(--emerald-light); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; animation: fadeIn 0.3s ease;">
+        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🎉</div>
+        <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--emerald-light); margin-bottom: 0.5rem;">Welcome to EGER Scholars, ${name}!</h4>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; max-width: 540px; margin: 0 auto;">
+          You are officially on the early-access list for <strong>${goalText}</strong>. We'll send workshop dates, essay feedback slots, and cohort alerts to <strong>${contact}</strong>.
+        </p>
+      </div>
+    `;
+    alertBox.style.display = "block";
+    form.reset();
+
+    // Smooth scroll to confirmation
+    alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 }

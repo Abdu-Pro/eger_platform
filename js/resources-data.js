@@ -42,7 +42,7 @@ const EGER_RESOURCES = [
     description: "The primary source for all national entrance exam questions. Over 85% of exam conceptual questions are derived directly from the textbook examples and summary boxes.",
     author: "Ministry of Education (Ethiopia)",
     badge: "Must Read 100%",
-    link: "#entrance-guide",
+    link: "entrance.html#curated-resources",
     tags: ["Core Textbooks", "Curriculum", "Foundation"]
   },
   {
@@ -53,7 +53,7 @@ const EGER_RESOURCES = [
     description: "High-yield reference books with condensed theory, chapter summaries, and thousands of topic-specific practice questions with answer keys.",
     author: "Extreme Publishers",
     badge: "Top Seller",
-    link: "#entrance-resources",
+    link: "entrance.html#curated-resources",
     tags: ["Practice Questions", "Revision", "STEM"]
   },
   {
@@ -64,7 +64,7 @@ const EGER_RESOURCES = [
     description: "Decade-long compilations of past entrance exam papers categorized by chapter and difficulty, with step-by-step explanatory solutions.",
     author: "Aster Nega / Alpha",
     badge: "Past Papers",
-    link: "#entrance-resources",
+    link: "entrance.html#curated-resources",
     tags: ["Past Papers", "Solutions", "Classics"]
   },
   {

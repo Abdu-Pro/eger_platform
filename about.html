@@ -194,7 +194,9 @@
             Be the first to hear about upcoming free webinars, essay brainstorming workshops, and cohort bootcamps.
           </p>
 
-          <form onsubmit="event.preventDefault(); alert('🎉 Thank you for joining EGER! We will contact you with upcoming workshop details and scholarship alerts.');" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div id="waitlistSuccessAlert" style="display: none; margin-bottom: 1.5rem;"></div>
+
+          <form id="communityWaitlistForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
             <div class="form-group">
               <label class="form-label" for="studentName">Your Full Name:</label>
               <input type="text" id="studentName" class="form-input" placeholder="e.g. Abebech / Chala" required>
@@ -327,7 +329,7 @@
         </div>
         <div style="display: flex; gap: 1.5rem;">
           <a href="index.html">Home</a>
-          <a href="#">Privacy</a>
+          <a href="privacy.html">Privacy & Terms</a>
           <a href="#topNav">Back to Top ↑</a>
         </div>
       </div>
