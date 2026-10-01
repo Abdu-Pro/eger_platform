@@ -4,6 +4,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
   initMobileMenu();
+  initNavScrollEffect();
   initPillarTabs();
   initResourceVault();
   initDsatCalculator();
@@ -57,6 +58,23 @@ function initMobileMenu() {
       menuBtn.textContent = "☰";
     });
   });
+}
+
+/* --- Nav Dynamic Scroll Effect --- */
+function initNavScrollEffect() {
+  const nav = document.getElementById("topNav");
+  if (!nav) return;
+
+  function onScroll() {
+    if (window.scrollY > 25) {
+      nav.classList.add("scrolled");
+    } else {
+      nav.classList.remove("scrolled");
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 }
 
 /* --- 3. Pillar Navigation Tabs --- */

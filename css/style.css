@@ -158,53 +158,81 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
-/* --- Top Navigation Header --- */
+/* --- Top Navigation Header (Floating Island / Modern Pill Navbar) --- */
 .header-nav {
   position: fixed;
-  top: 0;
+  top: 1rem;
   left: 0;
   right: 0;
   z-index: 1000;
+  max-width: 1220px;
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+  border-radius: var(--radius-full);
   background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-light);
-  transition: background-color var(--transition-base), border-color var(--transition-base);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 8px 30px rgba(15, 15, 18, 0.06);
+  transition: all var(--transition-base);
+}
+
+[data-theme="dark"] .header-nav {
+  background: rgba(14, 14, 18, 0.88);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.header-nav.scrolled {
+  top: 0.6rem;
+  box-shadow: 0 12px 36px rgba(15, 15, 18, 0.12), 0 0 20px var(--brand-red-glow);
+  border-color: var(--brand-red-border);
 }
 
 .nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 4.5rem;
+  height: 4.2rem;
+  padding: 0 1.25rem;
 }
 
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.75rem;
+  transition: transform var(--transition-fast);
+}
+
+.brand-logo:hover {
+  transform: translateY(-1px);
 }
 
 .logo-badge {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   background: var(--brand-black);
   color: #FFFFFF;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   border: 2px solid var(--brand-red);
   box-shadow: 0 0 14px var(--brand-red-glow);
   position: relative;
   overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.brand-logo:hover .logo-badge {
+  transform: scale(1.05) rotate(3deg);
+  box-shadow: 0 0 20px var(--brand-red);
 }
 
 [data-theme="dark"] .logo-badge {
-  background: #111114;
+  background: #111115;
   color: #FFFFFF;
 }
 
@@ -213,15 +241,15 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 0;
   right: 0;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: var(--brand-red);
   border-radius: 0 0 0 4px;
 }
 
 .logo-text {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   display: flex;
@@ -230,44 +258,83 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .logo-tagline {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
   color: var(--brand-red);
-  letter-spacing: 1.8px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
+.logo-tagline::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-red);
+}
+
+/* Nav Links - Interactive Pill Style */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 0.4rem;
   list-style: none;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a {
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  transition: color var(--transition-fast);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   position: relative;
-  padding: 0.35rem 0;
 }
 
-.nav-links a:hover,
+.nav-links a:hover {
+  color: var(--brand-red);
+  background: var(--brand-red-soft);
+  transform: translateY(-1px);
+}
+
 .nav-links a.active {
   color: var(--brand-red);
+  background: var(--brand-red-soft);
+  font-weight: 700;
+}
+
+.nav-links a.active::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-red);
+  box-shadow: 0 0 6px var(--brand-red);
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .btn-theme-toggle {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -275,40 +342,69 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   color: var(--text-primary);
-  font-size: 1.1rem;
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  font-size: 1.05rem;
+  transition: all var(--transition-fast);
 }
 
 .btn-theme-toggle:hover {
-  transform: scale(1.05);
+  transform: scale(1.08) rotate(15deg);
   border-color: var(--brand-red);
+  background: var(--brand-red-soft);
+  color: var(--brand-red);
 }
 
+/* Shimmering High-Octane CTA Button */
 .btn-nav-cta {
-  background: var(--brand-red);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand-red) 0%, #b80422 100%);
   color: #FFFFFF;
-  padding: 0.6rem 1.3rem;
+  padding: 0.65rem 1.4rem;
   border-radius: var(--radius-full);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.88rem;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  box-shadow: 0 4px 14px var(--brand-red-glow);
-  transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 4px 16px var(--brand-red-glow);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-nav-cta::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 220%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+  transform: rotate(25deg) translateX(-100%);
+  transition: transform 0.65s ease;
+}
+
+.btn-nav-cta:hover::before {
+  transform: rotate(25deg) translateX(100%);
 }
 
 .btn-nav-cta:hover {
   background: var(--brand-red-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--brand-red-glow);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px var(--brand-red-glow);
 }
 
 .menu-toggle {
   display: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: var(--text-primary);
-  padding: 0.5rem;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.menu-toggle:hover {
+  background: var(--brand-red-soft);
+  color: var(--brand-red);
 }
 
 /* --- Hero Section --- */
@@ -1671,30 +1767,44 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 980px) {
   .menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .nav-links {
     position: fixed;
-    top: 4.5rem;
-    left: 0;
-    right: 0;
+    top: 5.6rem;
+    left: 1rem;
+    right: 1rem;
+    width: calc(100% - 2rem);
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border-light);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
     flex-direction: column;
-    padding: 1.5rem;
-    gap: 1rem;
-    box-shadow: var(--shadow-md);
-    transform: translateY(-120%);
+    padding: 1.25rem;
+    gap: 0.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    transform: translateY(-20px) scale(0.96);
     opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999;
   }
 
   .nav-links.open {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.95rem;
+    border-radius: var(--radius-md);
   }
 
   .guide-grid-3,
