@@ -52,10 +52,26 @@ function initMobileMenu() {
     menuBtn.textContent = navLinks.classList.contains("open") ? "✕" : "☰";
   });
 
+  // Mobile dropdown toggle
+  const dropdownBtns = navLinks.querySelectorAll(".nav-dropdown-btn");
+  dropdownBtns.forEach(dBtn => {
+    dBtn.addEventListener("click", (e) => {
+      if (window.innerWidth <= 980) {
+        e.preventDefault();
+        e.stopPropagation();
+        const parent = dBtn.closest(".nav-dropdown");
+        if (parent) {
+          parent.classList.toggle("mobile-open");
+        }
+      }
+    });
+  });
+
   // Close menu when clicking any nav link
   navLinks.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
       navLinks.classList.remove("open");
+      navLinks.querySelectorAll(".nav-dropdown").forEach(d => d.classList.remove("mobile-open"));
       menuBtn.textContent = "☰";
     });
   });
@@ -64,6 +80,7 @@ function initMobileMenu() {
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#topNav") && navLinks.classList.contains("open")) {
       navLinks.classList.remove("open");
+      navLinks.querySelectorAll(".nav-dropdown").forEach(d => d.classList.remove("mobile-open"));
       menuBtn.textContent = "☰";
     }
   });
@@ -72,6 +89,7 @@ function initMobileMenu() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && navLinks.classList.contains("open")) {
       navLinks.classList.remove("open");
+      navLinks.querySelectorAll(".nav-dropdown").forEach(d => d.classList.remove("mobile-open"));
       menuBtn.textContent = "☰";
     }
   });
@@ -109,6 +127,23 @@ function initPillarTabs() {
       const targetPillar = document.getElementById(targetId);
       if (targetPillar) {
         targetPillar.classList.add("active");
+      }
+    });
+  });
+
+  // Handle in-page navigation links directly pointing to tools inside pillars
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", () => {
+      const targetHash = link.getAttribute("href");
+      if (targetHash === "#dsat-plan-tool" || targetHash === "#dsat-pillar") {
+        const dsatTab = document.querySelector('.pillar-tab-btn[data-target="dsat-pillar"]');
+        if (dsatTab && !dsatTab.classList.contains("active")) dsatTab.click();
+      } else if (targetHash === "#entrance-placement-tool" || targetHash === "#entrance-pillar") {
+        const entranceTab = document.querySelector('.pillar-tab-btn[data-target="entrance-pillar"]');
+        if (entranceTab && !entranceTab.classList.contains("active")) entranceTab.click();
+      } else if (targetHash === "#ec-spike-tool" || targetHash === "#scholarship-pillar") {
+        const ecTab = document.querySelector('.pillar-tab-btn[data-target="scholarship-pillar"]');
+        if (ecTab && !ecTab.classList.contains("active")) ecTab.click();
       }
     });
   });
@@ -201,99 +236,127 @@ function initResourceVault() {
 
 /* --- 5. DSAT Target & Study Plan Generator --- */
 function initDsatCalculator() {
-  const currentScoreInput = document.getElementById("calcCurrentScore");
-  const targetScoreInput = document.getElementById("calcTargetScore");
-  const weeksInput = document.getElementById("calcWeeks");
-  const hoursInput = document.getElementById("calcHoursPerWeek");
-  const calcBtn = document.getElementById("calculatePlanBtn");
+  const calcBtns = document.querySelectorAll("#calculatePlanBtn, .btn-calc-plan");
+  if (!calcBtns.length) return;
 
-  const resultScore = document.getElementById("planTargetDisplay");
-  const resultHours = document.getElementById("planTotalHours");
-  const resultWeekly = document.getElementById("planWeeklyTarget");
-  const roadmapContainer = document.getElementById("planRoadmapList");
+  calcBtns.forEach(calcBtn => {
+    const parentContainer = calcBtn.closest(".tool-container") || calcBtn.closest(".calculator-grid") || document;
+    const currentScoreInput = parentContainer.querySelector("#calcCurrentScore") || document.getElementById("calcCurrentScore");
+    const targetScoreInput = parentContainer.querySelector("#calcTargetScore") || document.getElementById("calcTargetScore");
+    const weeksInput = parentContainer.querySelector("#calcWeeks") || document.getElementById("calcWeeks");
+    const hoursInput = parentContainer.querySelector("#calcHoursPerWeek") || document.getElementById("calcHoursPerWeek");
 
-  if (!calcBtn) return;
+    const resultScore = parentContainer.querySelector("#planTargetDisplay") || document.getElementById("planTargetDisplay");
+    const resultHours = parentContainer.querySelector("#planTotalHours") || document.getElementById("planTotalHours");
+    const resultWeekly = parentContainer.querySelector("#planWeeklyTarget") || document.getElementById("planWeeklyTarget");
+    const roadmapContainer = parentContainer.querySelector("#planRoadmapList") || document.getElementById("planRoadmapList");
+    const resultBox = parentContainer.querySelector(".calc-result-box");
 
-  function updatePlan() {
-    const current = parseInt(currentScoreInput.value) || 1100;
-    const target = parseInt(targetScoreInput.value) || 1500;
-    const weeks = parseInt(weeksInput.value) || 8;
-    const hours = parseInt(hoursInput.value) || 10;
+    function updatePlan(isUserClick = false) {
+      if (!currentScoreInput || !targetScoreInput) return;
+      const current = parseInt(currentScoreInput.value) || 1100;
+      const target = parseInt(targetScoreInput.value) || 1500;
+      const weeks = parseInt(weeksInput ? weeksInput.value : 8) || 8;
+      const hours = parseInt(hoursInput ? hoursInput.value : 10) || 10;
 
-    const gap = target - current;
+      const gap = target - current;
 
-    // Edge case: target already attained or surpassed
-    if (gap <= 0) {
-      if (resultScore) resultScore.textContent = `${current} (Elite Bracket)`;
-      if (resultHours) resultHours.textContent = `~25 Hours Maintenance`;
-      if (resultWeekly) resultWeekly.textContent = `3-5h / week maintenance`;
+      // Edge case: target already attained or surpassed
+      if (gap <= 0) {
+        if (resultScore) resultScore.textContent = `${current} (Elite Bracket)`;
+        if (resultHours) resultHours.textContent = `~25 Hours Maintenance`;
+        if (resultWeekly) resultWeekly.textContent = `3-5h / week maintenance`;
 
-      if (roadmapContainer) {
-        roadmapContainer.innerHTML = `
-          <div class="roadmap-step">
-            <span class="step-num">1</span>
-            <div><strong>Score Retention:</strong> Complete 1 full timed adaptive Bluebook section per week to preserve timing intuition.</div>
-          </div>
-          <div class="roadmap-step">
-            <span class="step-num">2</span>
-            <div><strong>Perfect 800 Isolation:</strong> Drill hard-tier College Board Question Bank items in Module 2 (Nonlinear systems, Rhetorical Synthesis).</div>
-          </div>
-          <div class="roadmap-step">
-            <span class="step-num">3</span>
-            <div><strong>Super-Score Maximizer:</strong> Direct 80% of prep toward your lowest section to combine two test dates into a 1550+ superscore.</div>
-          </div>
-          <div class="roadmap-step">
-            <span class="step-num">4</span>
-            <div><strong>Peak Endurance:</strong> Practice test-day pacing (under 1 minute per standard item) to leave 10 minutes for Desmos regression checks.</div>
-          </div>
-        `;
+        if (roadmapContainer) {
+          roadmapContainer.innerHTML = `
+            <div class="roadmap-step">
+              <span class="step-num">1</span>
+              <div><strong>Score Retention:</strong> Complete 1 full timed adaptive Bluebook section per week to preserve timing intuition.</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">2</span>
+              <div><strong>Perfect 800 Isolation:</strong> Drill hard-tier College Board Question Bank items in Module 2 (Nonlinear systems, Rhetorical Synthesis).</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">3</span>
+              <div><strong>Super-Score Maximizer:</strong> Direct 80% of prep toward your lowest section to combine two test dates into a 1550+ superscore.</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">4</span>
+              <div><strong>Peak Endurance:</strong> Practice test-day pacing (under 1 minute per standard item) to leave 10 minutes for Desmos regression checks.</div>
+            </div>
+          `;
+        }
+      } else {
+        const totalHoursNeeded = Math.max(40, Math.round(gap * 0.85));
+        const hoursPerWeekRec = Math.round(totalHoursNeeded / Math.max(1, weeks));
+
+        if (resultScore) resultScore.textContent = `${target}+ Target`;
+        if (resultHours) resultHours.textContent = `~${totalHoursNeeded} Hours Total`;
+        if (resultWeekly) resultWeekly.textContent = `${hoursPerWeekRec}h / week recommended`;
+
+        if (roadmapContainer) {
+          let phase1 = "Weeks 1-2: Diagnostic & Desmos Calculator Mastery + RW Punctuation rules";
+          let phase2 = "Weeks 3-4: College Board Question Bank Hard Tier + Transition logic";
+          let phase3 = "Weeks 5-6: Full Timed Adaptive Bluebook Practice Tests (Tests 1-4)";
+          let phase4 = "Weeks 7+: Error Log deep dive, Module 2 high-difficulty stamina drills";
+
+          if (gap > 300) {
+            phase1 = "Weeks 1-3: Rebuild Math Algebra Foundations + Complete Erica Meltzer Grammar";
+            phase2 = "Weeks 4-6: Khan Academy Advanced Level + Desmos regression hacks";
+            phase3 = "Weeks 7-10: 4 Full Bluebook Practice Tests & detailed wrong answer analysis";
+            phase4 = "Weeks 11+: Pacing optimization (1-min per question) and test condition mastery";
+          }
+
+          roadmapContainer.innerHTML = `
+            <div class="roadmap-step">
+              <span class="step-num">1</span>
+              <div><strong>Phase 1 (Foundations):</strong> ${phase1}</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">2</span>
+              <div><strong>Phase 2 (Deep Problem Bank):</strong> ${phase2}</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">3</span>
+              <div><strong>Phase 3 (Simulation):</strong> ${phase3}</div>
+            </div>
+            <div class="roadmap-step">
+              <span class="step-num">4</span>
+              <div><strong>Phase 4 (Super-Score Peak):</strong> ${phase4}</div>
+            </div>
+          `;
+        }
       }
-      return;
+
+      if (isUserClick) {
+        const originalHTML = calcBtn.innerHTML;
+        calcBtn.innerHTML = `<span>✓ Study Plan Generated!</span> <span>⚡</span>`;
+        calcBtn.style.background = "var(--emerald-light)";
+        calcBtn.style.borderColor = "var(--emerald-light)";
+
+        if (resultBox) {
+          resultBox.classList.remove("plan-updated");
+          void resultBox.offsetWidth; // trigger reflow
+          resultBox.classList.add("plan-updated");
+        }
+
+        setTimeout(() => {
+          calcBtn.innerHTML = originalHTML;
+          calcBtn.style.background = "";
+          calcBtn.style.borderColor = "";
+        }, 1600);
+      }
     }
 
-    const totalHoursNeeded = Math.max(40, Math.round(gap * 0.85));
-    const hoursPerWeekRec = Math.round(totalHoursNeeded / Math.max(1, weeks));
+    calcBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      updatePlan(true);
+    });
 
-    if (resultScore) resultScore.textContent = `${target}+ Target`;
-    if (resultHours) resultHours.textContent = `~${totalHoursNeeded} Hours Total`;
-    if (resultWeekly) resultWeekly.textContent = `${hoursPerWeekRec}h / week recommended`;
-
-    if (roadmapContainer) {
-      let phase1 = "Weeks 1-2: Diagnostic & Desmos Calculator Mastery + RW Punctuation rules";
-      let phase2 = "Weeks 3-4: College Board Question Bank Hard Tier + Transition logic";
-      let phase3 = "Weeks 5-6: Full Timed Adaptive Bluebook Practice Tests (Tests 1-4)";
-      let phase4 = "Weeks 7+: Error Log deep dive, Module 2 high-difficulty stamina drills";
-
-      if (gap > 300) {
-        phase1 = "Weeks 1-3: Rebuild Math Algebra Foundations + Complete Erica Meltzer Grammar";
-        phase2 = "Weeks 4-6: Khan Academy Advanced Level + Desmos regression hacks";
-        phase3 = "Weeks 7-10: 4 Full Bluebook Practice Tests & detailed wrong answer analysis";
-        phase4 = "Weeks 11+: Pacing optimization (1-min per question) and test condition mastery";
-      }
-
-      roadmapContainer.innerHTML = `
-        <div class="roadmap-step">
-          <span class="step-num">1</span>
-          <div><strong>Phase 1 (Foundations):</strong> ${phase1}</div>
-        </div>
-        <div class="roadmap-step">
-          <span class="step-num">2</span>
-          <div><strong>Phase 2 (Deep Problem Bank):</strong> ${phase2}</div>
-        </div>
-        <div class="roadmap-step">
-          <span class="step-num">3</span>
-          <div><strong>Phase 3 (Simulation):</strong> ${phase3}</div>
-        </div>
-        <div class="roadmap-step">
-          <span class="step-num">4</span>
-          <div><strong>Phase 4 (Super-Score Peak):</strong> ${phase4}</div>
-        </div>
-      `;
-    }
-  }
-
-  calcBtn.addEventListener("click", updatePlan);
-  updatePlan();
+    // Initial calculation on load
+    updatePlan(false);
+  });
 }
 
 /* --- 6. EC Spike Evaluator Tool --- */
@@ -485,93 +548,117 @@ function initQuizzes() {
 
 /* --- 10. Ethiopian University Placement Predictor --- */
 function initUniversityPredictor() {
-  const calcBtn = document.getElementById("predictPlacementBtn");
-  if (!calcBtn) return;
+  const calcBtns = document.querySelectorAll("#predictPlacementBtn, .btn-predict-placement");
+  if (!calcBtns.length) return;
 
-  const scoreInput = document.getElementById("predictorScore");
-  const streamSelect = document.getElementById("predictorStream");
-  const resultContainer = document.getElementById("predictorResults");
+  calcBtns.forEach(calcBtn => {
+    const parentContainer = calcBtn.closest(".tool-container") || calcBtn.closest(".card") || document;
+    const scoreInput = parentContainer.querySelector("#predictorScore") || document.getElementById("predictorScore");
+    const streamSelect = parentContainer.querySelector("#predictorStream") || document.getElementById("predictorStream");
+    const resultContainer = parentContainer.querySelector("#predictorResults") || document.getElementById("predictorResults");
 
-  calcBtn.addEventListener("click", () => {
-    const score = parseInt(scoreInput.value) || 0;
-    const stream = streamSelect.value;
+    function runPrediction(isUserClick = false) {
+      if (!scoreInput || !streamSelect || !resultContainer) return;
+      const score = parseInt(scoreInput.value) || 0;
+      const stream = streamSelect.value;
 
-    let tier = "";
-    let recommendations = [];
+      let tier = "";
+      let recommendations = [];
 
-    if (stream === "natural") {
-      if (score >= 580) {
-        tier = "Tier 1: Elite STEM & High-Demand Placement (Top 1%)";
-        recommendations = [
-          "AAU (Addis Ababa University) - Medicine, Software Engineering, Electrical Engineering",
-          "AASTU (Addis Ababa Science & Technology University) - Chemical, AI & Mechanical Eng",
-          "ASTU (Adama Science & Technology University) - Computer Science & Applied Robotics",
-          "Eligibility for international scholarship nominations (MasterCard Foundation, DAAD, Turkiye Burslari)"
-        ];
-      } else if (score >= 500) {
-        tier = "Tier 2: Major Regional Comprehensive Universities";
-        recommendations = [
-          "Jimma University - Health Sciences, Technology, Public Health",
-          "Hawassa University - Agriculture, Bio-Sciences, Civil Engineering",
-          "Bahir Dar University - Maritime Academy, Information Technology",
-          "University of Gondar - Medicine, Biomedical Engineering"
-        ];
-      } else if (score >= 420) {
-        tier = "Tier 3: Standard University STEM Placements";
-        recommendations = [
-          "Arba Minch University - Water Resources & Hydraulic Engineering",
-          "Haramaya University - Agro-Technology, Computer Sciences",
-          "Wollega & Ambo Universities - Applied Sciences & Engineering"
-        ];
+      if (stream === "natural") {
+        if (score >= 580) {
+          tier = "Tier 1: Elite STEM & High-Demand Placement (Top 1%)";
+          recommendations = [
+            "AAU (Addis Ababa University) - Medicine, Software Engineering, Electrical Engineering",
+            "AASTU (Addis Ababa Science & Technology University) - Chemical, AI & Mechanical Eng",
+            "ASTU (Adama Science & Technology University) - Computer Science & Applied Robotics",
+            "Eligibility for international scholarship nominations (MasterCard Foundation, DAAD, Turkiye Burslari)"
+          ];
+        } else if (score >= 500) {
+          tier = "Tier 2: Major Regional Comprehensive Universities";
+          recommendations = [
+            "Jimma University - Health Sciences, Technology, Public Health",
+            "Hawassa University - Agriculture, Bio-Sciences, Civil Engineering",
+            "Bahir Dar University - Maritime Academy, Information Technology",
+            "University of Gondar - Medicine, Biomedical Engineering"
+          ];
+        } else if (score >= 420) {
+          tier = "Tier 3: Standard University STEM Placements";
+          recommendations = [
+            "Arba Minch University - Water Resources & Hydraulic Engineering",
+            "Haramaya University - Agro-Technology, Computer Sciences",
+            "Wollega & Ambo Universities - Applied Sciences & Engineering"
+          ];
+        } else {
+          tier = "Baseline Threshold (Preparation Focus Required)";
+          recommendations = [
+            "Focus on revision: Target 450+ to ensure public university STEM placement",
+            "Alternative pathways: TVET specialized technical diplomas & private college scholarships"
+          ];
+        }
       } else {
-        tier = "Baseline Threshold (Preparation Focus Required)";
-        recommendations = [
-          "Focus on revision: Target 450+ to ensure public university STEM placement",
-          "Alternative pathways: TVET specialized technical diplomas & private college scholarships"
-        ];
+        // Social Science
+        if (score >= 500) {
+          tier = "Tier 1: Elite Social Science & Law (Top 1%)";
+          recommendations = [
+            "AAU (Addis Ababa University) - School of Law, Economics, Business & Economics (FBE)",
+            "Jimma University - International Relations & Governance",
+            "Hawassa University - Finance, Management & Economics"
+          ];
+        } else if (score >= 420) {
+          tier = "Tier 2: Regional University Social & Humanities";
+          recommendations = [
+            "Bahir Dar University - Law & Social Work",
+            "Gondar University - Sociology & Business Management",
+            "Ambo University - Accounting & Finance"
+          ];
+        } else {
+          tier = "Baseline Threshold (Preparation Focus Required)";
+          recommendations = [
+            "Focus on Grade 11 & 12 History and Economics review to raise your score above 450"
+          ];
+        }
       }
-    } else {
-      // Social Science
-      if (score >= 500) {
-        tier = "Tier 1: Elite Social Science & Law (Top 1%)";
-        recommendations = [
-          "AAU (Addis Ababa University) - School of Law, Economics, Business & Economics (FBE)",
-          "Jimma University - International Relations & Governance",
-          "Hawassa University - Finance, Management & Economics"
-        ];
-      } else if (score >= 420) {
-        tier = "Tier 2: Regional University Social & Humanities";
-        recommendations = [
-          "Bahir Dar University - Law & Social Work",
-          "Gondar University - Sociology & Business Management",
-          "Ambo University - Accounting & Finance"
-        ];
-      } else {
-        tier = "Baseline Threshold (Preparation Focus Required)";
-        recommendations = [
-          "Focus on Grade 11 & 12 History and Economics review to raise your score above 450"
-        ];
+
+      resultContainer.innerHTML = `
+        <div style="background: var(--bg-card); border-left: 4px solid var(--emerald-light); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-top: 1.25rem;">
+          <div style="font-weight: 800; font-size: 1.1rem; color: var(--emerald-light); margin-bottom: 0.5rem;">
+            ${tier}
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Based on historical Ministry of Education placement thresholds for ${stream.toUpperCase()} science:
+          </p>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+            ${recommendations.map(r => `
+              <li style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-secondary);">
+                <span style="color: var(--emerald-light); font-weight: 800;">✓</span>
+                <span>${r}</span>
+              </li>
+            `).join("")}
+          </ul>
+        </div>
+      `;
+
+      if (isUserClick) {
+        const originalHTML = calcBtn.innerHTML;
+        calcBtn.innerHTML = `<span>✓ Placement Predicted!</span> <span>⚡</span>`;
+        calcBtn.style.background = "var(--emerald-light)";
+        calcBtn.style.borderColor = "var(--emerald-light)";
+        setTimeout(() => {
+          calcBtn.innerHTML = originalHTML;
+          calcBtn.style.background = "";
+          calcBtn.style.borderColor = "";
+        }, 1600);
       }
     }
 
-    resultContainer.innerHTML = `
-      <div style="background: var(--bg-card); border-left: 4px solid var(--emerald-light); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-top: 1.25rem;">
-        <div style="font-weight: 800; font-size: 1.1rem; color: var(--emerald-light); margin-bottom: 0.5rem;">
-          ${tier}
-        </div>
-        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          Based on historical Ministry of Education placement thresholds for ${stream.toUpperCase()} science:
-        </p>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
-          ${recommendations.map(r => `
-            <li style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-secondary);">
-              <span style="color: var(--emerald-light); font-weight: 800;">✓</span>
-              <span>${r}</span>
-            </li>
-          `).join("")}
-        </ul>
-      </div>
-    `;
+    calcBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      runPrediction(true);
+    });
+
+    // Run initial prediction on load
+    runPrediction(false);
   });
 }
 

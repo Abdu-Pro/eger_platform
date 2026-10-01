@@ -27,24 +27,42 @@
         <div class="logo-badge">E</div>
         <div class="logo-text">
           <span>EGER</span>
-          <span class="logo-tagline">THE FUTURE</span>
         </div>
       </a>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
-        <li><a href="entrance.html">Entrance Prep</a></li>
-        <li><a href="dsat.html">DSAT Mastery</a></li>
-        <li><a href="scholarships.html">Scholarships & ECs</a></li>
-        <li><a href="about.html" class="active">About & Brand</a></li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Prep</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="dsat.html"><span class="drop-icon">💻</span> DSAT Mastery</a></li>
+            <li><a href="entrance.html"><span class="drop-icon">📚</span> ESSLCE (National Exam)</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Opportunities</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="scholarships.html#full-ride"><span class="drop-icon">🏆</span> Scholarships</a></li>
+            <li><a href="scholarships.html#extracurriculars"><span class="drop-icon">⚡</span> Extracurricular Activities</a></li>
+            <li><a href="scholarships.html#college-essays"><span class="drop-icon">✍️</span> Personal Statement Tips</a></li>
+            <li><a href="scholarships.html#cv-resume"><span class="drop-icon">📄</span> CV & Resume Tips</a></li>
+          </ul>
+        </li>
+
+        <li><a href="index.html#resource-vault">Resources</a></li>
+        <li><a href="about.html" class="active">About</a></li>
       </ul>
 
       <div class="nav-actions">
         <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">🌙</button>
-        <a href="#mentorship-form" class="btn-nav-cta">
-          <span>Join Community</span>
-          <span>✨</span>
-        </a>
         <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">☰</button>
       </div>
     </div>
@@ -281,14 +299,13 @@
             <div class="logo-badge">E</div>
             <div class="logo-text">
               <span>EGER</span>
-              <span class="logo-tagline">THE FUTURE</span>
             </div>
           </div>
           <p class="footer-brand-desc">
             The premier educational launchpad empowering students from Ethiopian high schools to top universities worldwide.
           </p>
           <div style="font-size: 0.85rem; color: var(--brand-red); font-weight: 700;">
-            EGER • THE FUTURE
+            EGER
           </div>
         </div>
 

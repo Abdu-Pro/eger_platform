@@ -28,26 +28,42 @@
         <div class="logo-badge">E</div>
         <div class="logo-text">
           <span>EGER</span>
-          <span class="logo-tagline">THE FUTURE</span>
         </div>
       </a>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="entrance.html">Entrance Prep</a></li>
-        <li><a href="dsat.html">DSAT Mastery</a></li>
-        <li><a href="scholarships.html">Scholarships & ECs</a></li>
-        <li><a href="#interactive-tools">Tools & Planner</a></li>
-        <li><a href="#resource-vault">Resource Vault</a></li>
-        <li><a href="about.html">About & Brand</a></li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Prep</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="dsat.html"><span class="drop-icon">💻</span> DSAT Mastery</a></li>
+            <li><a href="entrance.html"><span class="drop-icon">📚</span> ESSLCE (National Exam)</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Opportunities</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="scholarships.html#full-ride"><span class="drop-icon">🏆</span> Scholarships</a></li>
+            <li><a href="scholarships.html#extracurriculars"><span class="drop-icon">⚡</span> Extracurricular Activities</a></li>
+            <li><a href="scholarships.html#college-essays"><span class="drop-icon">✍️</span> Personal Statement Tips</a></li>
+            <li><a href="scholarships.html#cv-resume"><span class="drop-icon">📄</span> CV & Resume Tips</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#resource-vault">Resources</a></li>
+        <li><a href="about.html">About</a></li>
       </ul>
 
       <div class="nav-actions">
         <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">🌙</button>
-        <a href="#interactive-tools" class="btn-nav-cta">
-          <span>Launch Toolkit</span>
-          <span>⚡</span>
-        </a>
         <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">☰</button>
       </div>
     </div>
@@ -92,7 +108,7 @@
             <span>Explore Complete Guides</span>
             <span>→</span>
           </a>
-          <a href="#interactive-tools" class="btn-secondary">
+          <a href="#dsat-plan-tool" class="btn-secondary" id="heroDsatPlanBtn">
             <span>Calculate DSAT Plan</span>
             <span>🎯</span>
           </a>
@@ -275,6 +291,41 @@
             </ul>
           </div>
         </div>
+
+        <!-- Embedded Tool: Entrance University Placement Predictor -->
+        <div class="tool-container" id="entrance-placement-tool" style="margin-top: 2.5rem;">
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <span style="font-size: 1.25rem;">🏛️</span>
+              <h4 style="font-size: 1.35rem; font-weight: 800; margin: 0;">Entrance University Placement Predictor</h4>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin: 0;">Enter your projected matric score to see which universities and departments (Medicine, Engineering, Law) you qualify for.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="predictorScore">Projected Score (out of 600 or 700):</label>
+              <input type="number" id="predictorScore" class="form-input" min="200" max="700" value="560">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="predictorStream">Academic Stream:</label>
+              <select id="predictorStream" class="form-select">
+                <option value="natural" selected>Natural Science</option>
+                <option value="social">Social Science</option>
+              </select>
+            </div>
+            <div>
+              <button id="predictPlacementBtn" type="button" class="btn-primary" style="width: 100%; justify-content: center; height: 44px; cursor: pointer;">
+                <span>Predict Placement</span>
+                <span>⚡</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="predictorResults" style="margin-top: 1rem;">
+            <!-- Dynamically populated by js/app.js -->
+          </div>
+        </div>
       </div>
 
       <!-- =====================================================================
@@ -367,6 +418,66 @@
                 <div><strong>Top Books & YouTube:</strong> <em>Erica Meltzer</em> (Reading/Grammar), <em>College Panda DSAT Math</em>, and <em>PrepPros</em> YouTube channel for Desmos masterclasses.</div>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <!-- Embedded Tool: DSAT Study Plan Generator -->
+        <div class="tool-container" id="dsat-plan-tool" style="margin-top: 2.5rem;">
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <span style="font-size: 1.25rem;">🎯</span>
+              <h4 style="font-size: 1.35rem; font-weight: 800; margin: 0;">DSAT Target & Study Plan Generator</h4>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin: 0;">Enter your current baseline score, dream target score, and prep timeline to generate your customized training schedule.</p>
+          </div>
+
+          <div class="calculator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="calcCurrentScore">Current / Baseline Score (or practice test):</label>
+                <input type="number" id="calcCurrentScore" class="form-input" min="400" max="1600" step="10" value="1150">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcTargetScore">Target Dream Score:</label>
+                <select id="calcTargetScore" class="form-select">
+                  <option value="1400">1400+ (Competitive for Top 50)</option>
+                  <option value="1500" selected>1500+ (Ivy League & Full-Ride Tier)</option>
+                  <option value="1550">1550+ (Top 1% Global Excellence)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcWeeks">Weeks until Test Date:</label>
+                <select id="calcWeeks" class="form-select">
+                  <option value="4">4 Weeks (Intensive Sprint)</option>
+                  <option value="8" selected>8 Weeks (Recommended Pace)</option>
+                  <option value="12">12 Weeks (Comprehensive Mastery)</option>
+                  <option value="16">16 Weeks (Foundational Rebuild)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcHoursPerWeek">Weekly Study Hours You Can Dedicate:</label>
+                <input type="number" id="calcHoursPerWeek" class="form-input" min="2" max="40" value="12">
+              </div>
+
+              <button id="calculatePlanBtn" type="button" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem; cursor: pointer;">
+                <span>Generate My Study Plan</span>
+                <span>⚡</span>
+              </button>
+            </div>
+
+            <div class="calc-result-box">
+              <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--gold-vibrant); letter-spacing: 1px;">Your Study Blueprint</span>
+              <div class="score-badge-large" id="planTargetDisplay">1500+ Target</div>
+              <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;" id="planTotalHours">~280 Hours Total</div>
+              <div style="color: var(--text-secondary); font-size: 0.9rem;" id="planWeeklyTarget">12h / week recommended</div>
+
+              <div class="plan-roadmap-steps" id="planRoadmapList">
+                <!-- Dynamically populated by js/app.js -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -484,119 +595,52 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- =========================================================================
-       INTERACTIVE STUDENT TOOLKIT
-       ========================================================================= -->
-  <section class="section" id="interactive-tools" style="background: var(--bg-secondary);">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Interactive Calculators</span>
-        <h2 class="section-title">EGER Student Strategy Toolkit</h2>
-        <p class="section-desc">Generate your personalized DSAT study roadmap and evaluate your extracurricular spike tier.</p>
-      </div>
-
-      <!-- Tool 1: DSAT Study Plan Calculator -->
-      <div class="tool-container">
-        <div style="margin-bottom: 2rem;">
-          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎯 DSAT Target & Study Plan Generator</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem;">Enter your current baseline score, your dream score, and prep timeline to generate your customized training schedule.</p>
-        </div>
-
-        <div class="calculator-grid">
-          <div>
-            <div class="form-group">
-              <label class="form-label" for="calcCurrentScore">Current / Baseline Score (or practice test):</label>
-              <input type="number" id="calcCurrentScore" class="form-input" min="400" max="1600" step="10" value="1150">
+        <!-- Embedded Tool: Extracurricular Spike Evaluator -->
+        <div class="tool-container" id="ec-spike-tool" style="margin-top: 2.5rem;">
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <span style="font-size: 1.25rem;">⚡</span>
+              <h4 style="font-size: 1.35rem; font-weight: 800; margin: 0;">Extracurricular (EC) Spike Evaluator</h4>
             </div>
-
-            <div class="form-group">
-              <label class="form-label" for="calcTargetScore">Target Dream Score:</label>
-              <select id="calcTargetScore" class="form-select">
-                <option value="1400">1400+ (Competitive for Top 50)</option>
-                <option value="1500" selected>1500+ (Ivy League & Full-Ride Tier)</option>
-                <option value="1550">1550+ (Top 1% Global Excellence)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="calcWeeks">Weeks until Test Date:</label>
-              <select id="calcWeeks" class="form-select">
-                <option value="4">4 Weeks (Intensive Sprint)</option>
-                <option value="8" selected>8 Weeks (Recommended Pace)</option>
-                <option value="12">12 Weeks (Comprehensive Mastery)</option>
-                <option value="16">16 Weeks (Foundational Rebuild)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="calcHoursPerWeek">Weekly Study Hours You Can Dedicate:</label>
-              <input type="number" id="calcHoursPerWeek" class="form-input" min="2" max="40" value="12">
-            </div>
-
-            <button id="calculatePlanBtn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
-              <span>Generate My Study Plan</span>
-              <span>⚡</span>
-            </button>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin: 0;">Click on your current primary activity level to receive actionable feedback on how to upgrade it into a Tier 1 or Tier 2 competitive hook for full-ride scholarships.</p>
           </div>
 
-          <div class="calc-result-box">
-            <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--gold-vibrant); letter-spacing: 1px;">Your Study Blueprint</span>
-            <div class="score-badge-large" id="planTargetDisplay">1500+ Target</div>
-            <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;" id="planTotalHours">~280 Hours Total</div>
-            <div style="color: var(--text-secondary); font-size: 0.9rem;" id="planWeeklyTarget">12h / week recommended</div>
+          <div class="spike-tiers">
+            <div class="spike-tier-card selected" data-tier="1">
+              <span class="tier-badge">Tier 1</span>
+              <div class="tier-title">International / National</div>
+              <div class="tier-example">e.g., Olympiad medalist, founder of NGO with 10k+ impact, published scientific paper</div>
+            </div>
 
-            <div class="plan-roadmap-steps" id="planRoadmapList">
-              <!-- Dynamically populated by JS -->
+            <div class="spike-tier-card" data-tier="2">
+              <span class="tier-badge">Tier 2</span>
+              <div class="tier-title">State / Regional Leader</div>
+              <div class="tier-example">e.g., Student council president, regional debate champion, founder of active 100+ member club</div>
+            </div>
+
+            <div class="spike-tier-card" data-tier="3">
+              <span class="tier-badge">Tier 3</span>
+              <div class="tier-title">School Leader / Officer</div>
+              <div class="tier-example">e.g., Club treasurer, varsity sports player, regular peer tutor, choir lead</div>
+            </div>
+
+            <div class="spike-tier-card" data-tier="4">
+              <span class="tier-badge">Tier 4</span>
+              <div class="tier-title">General Participant</div>
+              <div class="tier-example">e.g., General club member, occasional volunteer, hobbyist without public portfolio</div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Tool 2: EC Spike Evaluator -->
-      <div class="tool-container" style="margin-top: 3rem;">
-        <div style="margin-bottom: 1.5rem;">
-          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡ Extracurricular (EC) Spike Evaluator</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem;">Click on your current primary activity level to receive actionable feedback on how to upgrade it into a Tier 1 or Tier 2 competitive hook.</p>
-        </div>
-
-        <div class="spike-tiers">
-          <div class="spike-tier-card selected" data-tier="1">
-            <span class="tier-badge">Tier 1</span>
-            <div class="tier-title">International / National</div>
-            <div class="tier-example">e.g., Olympiad medalist, founder of NGO with 10k+ impact, published scientific paper</div>
-          </div>
-
-          <div class="spike-tier-card" data-tier="2">
-            <span class="tier-badge">Tier 2</span>
-            <div class="tier-title">State / Regional Leader</div>
-            <div class="tier-example">e.g., Student council president, regional debate champion, founder of active 100+ member club</div>
-          </div>
-
-          <div class="spike-tier-card" data-tier="3">
-            <span class="tier-badge">Tier 3</span>
-            <div class="tier-title">School Leader / Officer</div>
-            <div class="tier-example">e.g., Club treasurer, varsity sports player, regular peer tutor, choir lead</div>
-          </div>
-
-          <div class="spike-tier-card" data-tier="4">
-            <span class="tier-badge">Tier 4</span>
-            <div class="tier-title">General Participant</div>
-            <div class="tier-example">e.g., General club member, occasional volunteer, hobbyist without public portfolio</div>
-          </div>
-        </div>
-
-        <div id="spikeFeedbackBox" style="margin-top: 1.75rem;">
-          <!-- Dynamically populated by JS -->
-          <div style="background: var(--bg-card); border-left: 4px solid var(--gold-vibrant); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-              <h4 style="font-size: 1.1rem; font-weight: 800;">Tier 1: World-Class / National Rare Impact</h4>
-              <span class="tier-badge">Top 0.5% of Global Applicants</span>
+          <div id="spikeFeedbackBox" style="margin-top: 1.5rem;">
+            <!-- Dynamically populated by js/app.js -->
+            <div style="background: var(--bg-card); border-left: 4px solid var(--gold-vibrant); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h4 style="font-size: 1.1rem; font-weight: 800;">Tier 1: World-Class / National Rare Impact</h4>
+                <span class="tier-badge">Top 0.5% of Global Applicants</span>
+              </div>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Exceptional! Examples include winning International Olympiad medals, founding a registered NGO serving 10,000+ people, or published research with a university professor. On your Common App, focus on quantifiable metrics, letters of support, and how this links to your major.</p>
             </div>
-            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Exceptional! Examples include winning International Olympiad medals, founding a registered NGO serving 10,000+ people, or published research with a university professor. On your Common App, focus on quantifiable metrics, letters of support, and how this links to your major.</p>
           </div>
         </div>
       </div>
@@ -800,14 +844,13 @@
             <div class="logo-badge">E</div>
             <div class="logo-text">
               <span>EGER</span>
-              <span class="logo-tagline">THE FUTURE</span>
             </div>
           </div>
           <p class="footer-brand-desc">
             The premier educational launchpad empowering students from Ethiopian high schools to top universities worldwide.
           </p>
           <div style="font-size: 0.85rem; color: var(--brand-red); font-weight: 700;">
-            EGER • THE FUTURE
+            EGER
           </div>
         </div>
 
@@ -828,7 +871,7 @@
             <li><a href="dsat.html#desmos-bible">Desmos Regression Bible</a></li>
             <li><a href="scholarships.html#full-ride">Need-Blind Colleges</a></li>
             <li><a href="scholarships.html#college-essays">College Essay Secrets</a></li>
-            <li><a href="#interactive-tools">Study Plan Generator</a></li>
+            <li><a href="#dsat-plan-tool">Study Plan Generator</a></li>
           </ul>
         </div>
 

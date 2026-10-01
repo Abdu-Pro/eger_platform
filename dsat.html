@@ -27,24 +27,42 @@
         <div class="logo-badge">E</div>
         <div class="logo-text">
           <span>EGER</span>
-          <span class="logo-tagline">THE FUTURE</span>
         </div>
       </a>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
-        <li><a href="entrance.html">Entrance Prep</a></li>
-        <li><a href="dsat.html" class="active">DSAT Mastery</a></li>
-        <li><a href="scholarships.html">Scholarships & ECs</a></li>
-        <li><a href="about.html">About & Brand</a></li>
+
+        <li class="nav-dropdown active">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Prep</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="dsat.html"><span class="drop-icon">💻</span> DSAT Mastery</a></li>
+            <li><a href="entrance.html"><span class="drop-icon">📚</span> ESSLCE (National Exam)</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Opportunities</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="scholarships.html#full-ride"><span class="drop-icon">🏆</span> Scholarships</a></li>
+            <li><a href="scholarships.html#extracurriculars"><span class="drop-icon">⚡</span> Extracurricular Activities</a></li>
+            <li><a href="scholarships.html#college-essays"><span class="drop-icon">✍️</span> Personal Statement Tips</a></li>
+            <li><a href="scholarships.html#cv-resume"><span class="drop-icon">📄</span> CV & Resume Tips</a></li>
+          </ul>
+        </li>
+
+        <li><a href="index.html#resource-vault">Resources</a></li>
+        <li><a href="about.html">About</a></li>
       </ul>
 
       <div class="nav-actions">
         <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">🌙</button>
-        <a href="index.html#interactive-tools" class="btn-nav-cta">
-          <span>DSAT Planner</span>
-          <span>⚡</span>
-        </a>
         <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">☰</button>
       </div>
     </div>
@@ -278,6 +296,63 @@
           </div>
         </div>
 
+        <!-- Embedded Interactive DSAT Target & Study Plan Generator Tool -->
+        <div class="tool-container" id="dsat-plan-tool" style="margin-top: 3rem;">
+          <div style="margin-bottom: 2rem;">
+            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎯 DSAT Target & Study Plan Generator</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Enter your current baseline score, your dream score, and prep timeline to generate your customized training schedule.</p>
+          </div>
+
+          <div class="calculator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="calcCurrentScore">Current / Baseline Score (or practice test):</label>
+                <input type="number" id="calcCurrentScore" class="form-input" min="400" max="1600" step="10" value="1150">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcTargetScore">Target Dream Score:</label>
+                <select id="calcTargetScore" class="form-select">
+                  <option value="1400">1400+ (Competitive for Top 50)</option>
+                  <option value="1500" selected>1500+ (Ivy League & Full-Ride Tier)</option>
+                  <option value="1550">1550+ (Top 1% Global Excellence)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcWeeks">Weeks until Test Date:</label>
+                <select id="calcWeeks" class="form-select">
+                  <option value="4">4 Weeks (Intensive Sprint)</option>
+                  <option value="8" selected>8 Weeks (Recommended Pace)</option>
+                  <option value="12">12 Weeks (Comprehensive Mastery)</option>
+                  <option value="16">16 Weeks (Foundational Rebuild)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="calcHoursPerWeek">Weekly Study Hours You Can Dedicate:</label>
+                <input type="number" id="calcHoursPerWeek" class="form-input" min="2" max="40" value="12">
+              </div>
+
+              <button id="calculatePlanBtn" class="btn-primary" type="button" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                <span>Generate My Study Plan</span>
+                <span>⚡</span>
+              </button>
+            </div>
+
+            <div class="calc-result-box">
+              <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--gold-vibrant); letter-spacing: 1px;">Your Study Blueprint</span>
+              <div class="score-badge-large" id="planTargetDisplay">1500+ Target</div>
+              <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;" id="planTotalHours">~280 Hours Total</div>
+              <div style="color: var(--text-secondary); font-size: 0.9rem;" id="planWeeklyTarget">12h / week recommended</div>
+
+              <div class="plan-roadmap-steps" id="planRoadmapList">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
       </article>
 
       <!-- Sticky Sidebar -->
@@ -289,7 +364,7 @@
             <li><a href="#desmos-bible">Desmos Math 800 Bible <span>→</span></a></li>
             <li><a href="#rw-mastery">Reading & Writing Rules <span>→</span></a></li>
             <li><a href="#top-resources">Top Books & Channels <span>→</span></a></li>
-            <li><a href="index.html#interactive-tools">Study Plan Calculator <span>→</span></a></li>
+            <li><a href="#dsat-plan-tool">Study Plan Generator <span>→</span></a></li>
           </ul>
         </div>
 
@@ -329,14 +404,13 @@
             <div class="logo-badge">E</div>
             <div class="logo-text">
               <span>EGER</span>
-              <span class="logo-tagline">THE FUTURE</span>
             </div>
           </div>
           <p class="footer-brand-desc">
             The premier educational launchpad empowering students from Ethiopian high schools to top universities worldwide.
           </p>
           <div style="font-size: 0.85rem; color: var(--brand-red); font-weight: 700;">
-            EGER • THE FUTURE
+            EGER
           </div>
         </div>
 

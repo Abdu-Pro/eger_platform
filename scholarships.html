@@ -27,24 +27,42 @@
         <div class="logo-badge">E</div>
         <div class="logo-text">
           <span>EGER</span>
-          <span class="logo-tagline">THE FUTURE</span>
         </div>
       </a>
 
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
-        <li><a href="entrance.html">Entrance Prep</a></li>
-        <li><a href="dsat.html">DSAT Mastery</a></li>
-        <li><a href="scholarships.html" class="active">Scholarships & ECs</a></li>
-        <li><a href="about.html">About & Brand</a></li>
+
+        <li class="nav-dropdown">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Prep</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="dsat.html"><span class="drop-icon">💻</span> DSAT Mastery</a></li>
+            <li><a href="entrance.html"><span class="drop-icon">📚</span> ESSLCE (National Exam)</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-dropdown active">
+          <button class="nav-dropdown-btn" aria-expanded="false" type="button">
+            <span>Opportunities</span>
+            <span class="dropdown-chevron">▾</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="scholarships.html#full-ride"><span class="drop-icon">🏆</span> Scholarships</a></li>
+            <li><a href="scholarships.html#extracurriculars"><span class="drop-icon">⚡</span> Extracurricular Activities</a></li>
+            <li><a href="scholarships.html#college-essays"><span class="drop-icon">✍️</span> Personal Statement Tips</a></li>
+            <li><a href="scholarships.html#cv-resume"><span class="drop-icon">📄</span> CV & Resume Tips</a></li>
+          </ul>
+        </li>
+
+        <li><a href="index.html#resource-vault">Resources</a></li>
+        <li><a href="about.html">About</a></li>
       </ul>
 
       <div class="nav-actions">
         <button class="btn-theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">🌙</button>
-        <a href="index.html#interactive-tools" class="btn-nav-cta">
-          <span>Evaluate EC Spike</span>
-          <span>⚡</span>
-        </a>
         <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu">☰</button>
       </div>
     </div>
@@ -228,6 +246,50 @@
           </div>
         </div>
 
+        <!-- Embedded Interactive EC Spike Evaluator Tool -->
+        <div class="tool-container" id="ec-spike-tool" style="margin: 2.5rem 0;">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">⚡ Interactive EC Spike Evaluator</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem;">
+            Click on your current primary activity level to evaluate its impact tier and unlock strategic advice to scale it into a Tier 1 or Tier 2 competitive hook.
+          </p>
+
+          <div class="spike-tiers">
+            <div class="spike-tier-card selected" data-tier="1">
+              <span class="tier-badge">Tier 1</span>
+              <div class="tier-title">International / National</div>
+              <div class="tier-example">e.g., Olympiad medalist, founder of NGO with 10k+ impact, published scientific paper</div>
+            </div>
+
+            <div class="spike-tier-card" data-tier="2">
+              <span class="tier-badge">Tier 2</span>
+              <div class="tier-title">State / Regional Leader</div>
+              <div class="tier-example">e.g., Student council president, regional debate champion, founder of active 100+ member club</div>
+            </div>
+
+            <div class="spike-tier-card" data-tier="3">
+              <span class="tier-badge">Tier 3</span>
+              <div class="tier-title">School Leader / Officer</div>
+              <div class="tier-example">e.g., Club treasurer, varsity sports player, regular peer tutor, choir lead</div>
+            </div>
+
+            <div class="spike-tier-card" data-tier="4">
+              <span class="tier-badge">Tier 4</span>
+              <div class="tier-title">General Participant</div>
+              <div class="tier-example">e.g., General club member, occasional volunteer, hobbyist without public portfolio</div>
+            </div>
+          </div>
+
+          <div id="spikeFeedbackBox" style="margin-top: 1.5rem;">
+            <div style="background: var(--bg-card); border-left: 4px solid var(--gold-vibrant); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h4 style="font-size: 1.1rem; font-weight: 800;">Tier 1: World-Class / National Rare Impact</h4>
+                <span class="tier-badge">Top 0.5% of Global Applicants</span>
+              </div>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Exceptional! Examples include winning International Olympiad medals, founding a registered NGO serving 10,000+ people, or published research with a university professor. On your Common App, focus on quantifiable metrics, letters of support, and how this links to your major.</p>
+            </div>
+          </div>
+        </div>
+
         <h3>Writing High-Impact 150-Character Common App Descriptions</h3>
         <p>
           The Common Application gives you only 150 characters per activity description. Follow this formula: <strong>[Strong Action Verb] + [Specific Responsibility] + [Quantifiable Impact Number]</strong>.
@@ -341,6 +403,72 @@
           </div>
         </div>
 
+        <!-- Section 6: CV & Resume Guide -->
+        <h2 id="cv-resume">6. Academic CV & Resume Secrets for Global Scholarships</h2>
+        <p>
+          While the Common App provides an activities list, international scholarship programs (including MasterCard Foundation Scholars, DAAD, Rhodes/RISE, Oxford Clarendon, Japanese MEXT, and European university grants) require a formal <strong>1-page Academic Curriculum Vitae (CV) or Resume</strong>.
+        </p>
+
+        <h3>The 5 Core Pillars of a Scholarship-Grade CV</h3>
+        <ul>
+          <li><strong>1. Header & Contact:</strong> Full legal name, professional email (name@domain.com), international phone code (+251), city/country, and portfolio link (GitHub, LinkedIn, or personal website). <em>Never include a photo, age, marital status, or religion.</em></li>
+          <li><strong>2. Education & Academic Rank:</strong> High school name, location, graduation year, cumulative percentage/GPA, and relative class rank (e.g. <em>Rank 1 out of 340 students</em>).</li>
+          <li><strong>3. Academic Honors & Olympiads:</strong> National exam super-scores (e.g. <em>Grade 12 Matric 610/700</em>), STEM olympiad medals, regional science fairs, and school academic excellence pins.</li>
+          <li><strong>4. Leadership, Initiatives & Research:</strong> The engine of your CV. Bullet points highlighting founded initiatives, club presidencies, or independent research.</li>
+          <li><strong>5. Skills & Languages:</strong> Languages spoken with fluency rating (e.g., <em>Afaan Oromoo - Native, Amharic - Fluent, English - Proficient / 1500 DSAT</em>), software proficiencies (Python, Desmos, Excel, Web Design).</li>
+        </ul>
+
+        <h3>The Harvard Action-Verb Bullet Formula</h3>
+        <p>Every bullet point under your experiences must obey this strict three-part formula:</p>
+        <div class="formula-box">
+          <div class="formula-title">💡 The High-Impact CV Action Bullet Formula</div>
+          <div class="formula-code">
+            [Strong Action Verb] + [Context & Scope of Responsibility] + [Quantifiable Impact Number]
+          </div>
+          <p style="font-size: 0.9rem; margin-top: 0.6rem; color: var(--text-secondary);">
+            <strong>Example:</strong> <em>"Spearheaded a 10-week peer tutoring circle for 42 Grade 11 students; engineered simplified calculus problem sets that lifted cohort exam pass rates by 38%."</em>
+          </p>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 1.5rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>❌ Weak / Passive Bullet</th>
+                <th>✅ Strong Scholarship-Grade Bullet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Responsible for helping with the school environment club.</td>
+                <td><strong style="color: var(--emerald-light);">Mobilized 65 student volunteers to plant 1,200 indigenous tree seedlings across 3 school compounds; recognized with city youth conservation award.</strong></td>
+              </tr>
+              <tr>
+                <td>Was the captain of the debate team and debated topics.</td>
+                <td><strong style="color: var(--emerald-light);">Captained 12-member varsity debate delegation; coached novice debaters to 1st place in Regional Inter-School Championship across 18 preparatory schools.</strong></td>
+              </tr>
+              <tr>
+                <td>Helped teach younger students math after school.</td>
+                <td><strong style="color: var(--emerald-light);">Designed 8-module foundational algebra syllabus; delivered 50+ hours of after-school instruction to 35 underprivileged middle school pupils.</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Copyable CV Template Tip -->
+        <div class="card" style="margin-top: 2rem; background: var(--bg-card); border-left: 4px solid var(--brand-red);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h4 style="margin: 0; font-size: 1.05rem;">📋 Standard 1-Page Scholarship CV Format</h4>
+            <span class="res-badge">International Standard</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            Keep margins at 0.5 - 0.75 inches, font size 10-11pt (Times New Roman, Calibri, or Arial), and strictly adhere to ONE page. Scholarship reviewers spend less than 30 seconds scanning your CV!
+          </p>
+          <button class="btn-copy-tip" data-tip-content="[FULL NAME] | Addis Ababa, Ethiopia | email@gmail.com | +251 91 234 5678&#10;&#10;EDUCATION:&#10;High School Name, City — Expected Graduation: June 2027&#10;GPA: 96.8% (Rank: 1/320) | DSAT: 1520 (Math: 790, RW: 730)&#10;&#10;HONORS & AWARDS:&#10;- National Mathematics Olympiad: 2nd Place Regional Finalist (2026)&#10;- Outstanding Academic Scholar Award: Top Performing Student in Preparatory Division&#10;&#10;LEADERSHIP & INITIATIVES:&#10;- Founder & Lead Organizer, Youth Tech Circle: Taught Python programming to 85 peers&#10;- President, School Debate Society: Directed 24 weekly debates and hosted regional tournament&#10;&#10;SKILLS & LANGUAGES:&#10;- Languages: Afaan Oromoo (Native), Amharic (Fluent), English (Fluent - 1500 SAT)&#10;- Technical: Python, Desmos Graphing Calculator, LaTeX, MS Excel">
+            <span>📋 Copy Standard 1-Page CV Outline</span>
+          </button>
+        </div>
+
       </article>
 
       <!-- Sticky Sidebar -->
@@ -351,8 +479,10 @@
             <li><a href="#college-application">Application Mechanics <span>→</span></a></li>
             <li><a href="#full-ride">Full-Ride Scholarships <span>→</span></a></li>
             <li><a href="#extracurriculars">Extracurricular Spike <span>→</span></a></li>
+            <li><a href="#ec-spike-tool">EC Spike Evaluator <span>→</span></a></li>
             <li><a href="#college-essays">Winning Personal Statements <span>→</span></a></li>
             <li><a href="#summer-programs">Summer Opportunities <span>→</span></a></li>
+            <li><a href="#cv-resume">CV & Resume Secrets <span>→</span></a></li>
           </ul>
         </div>
 
@@ -361,8 +491,8 @@
           <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
             Test your current extracurricular tier and see our step-by-step recommendations on our interactive builder:
           </p>
-          <a href="index.html#interactive-tools" class="btn-primary" style="width: 100%; justify-content: center; font-size: 0.88rem; padding: 0.7rem 1rem;">
-            <span>Open Spike Evaluator</span>
+          <a href="#ec-spike-tool" class="btn-primary" style="width: 100%; justify-content: center; font-size: 0.88rem; padding: 0.7rem 1rem;">
+            <span>Jump to Spike Evaluator</span>
             <span>⚡</span>
           </a>
         </div>
@@ -392,14 +522,13 @@
             <div class="logo-badge">E</div>
             <div class="logo-text">
               <span>EGER</span>
-              <span class="logo-tagline">THE FUTURE</span>
             </div>
           </div>
           <p class="footer-brand-desc">
             The premier educational launchpad empowering students from Ethiopian high schools to top universities worldwide.
           </p>
           <div style="font-size: 0.85rem; color: var(--brand-red); font-weight: 700;">
-            EGER • THE FUTURE
+            EGER
           </div>
         </div>
 
